@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FoodFilled — Impact Intelligence</title>
+<style>
+:root{
+  --bg:#edf3ef;--ink:#0d241b;--muted:#617069;--white:#fff;
+  --glass:rgba(255,255,255,.16);--glass2:rgba(255,255,255,.30);
+  --stroke:rgba(255,255,255,.85);--shadow:0 24px 70px rgba(13,36,27,.13);
+  --green:#88c56a;--lime:#d4ef74;--teal:#58a993;--orange:#efa66b;
+  --darkglass:rgba(15,42,32,.42);--darkstroke:rgba(255,255,255,.20);
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ background:
+ radial-gradient(520px 360px at 8% 12%,rgba(212,239,116,.20),transparent 70%),
+ radial-gradient(600px 420px at 92% 18%,rgba(88,169,147,.16),transparent 68%),
+ radial-gradient(420px 300px at 18% 58%,rgba(239,166,107,.10),transparent 72%),
+ radial-gradient(520px 360px at 82% 72%,rgba(88,169,147,.12),transparent 70%),
+ linear-gradient(180deg,#f2ede1,#f6f0e4 48%,#f0ece0);
+ min-height:100vh;line-height:1.5;
+}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+background:
+ radial-gradient(180px 180px at 12% 28%,rgba(88,169,147,.10),transparent 72%),
+ radial-gradient(220px 220px at 88% 38%,rgba(212,239,116,.11),transparent 72%),
+ radial-gradient(160px 160px at 28% 88%,rgba(239,166,107,.08),transparent 72%),
+ radial-gradient(240px 180px at 76% 86%,rgba(255,255,255,.40),transparent 72%);
+}
+button,a{font:inherit}a{text-decoration:none;color:inherit}button{cursor:pointer}
+.wrap{width:min(1180px,calc(100% - 36px));margin:auto}
+.glass{background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(28px) saturate(170%);-webkit-backdrop-filter:blur(28px) saturate(170%);box-shadow:var(--shadow)}
+
+.glass{position;overflow}.glass{content:"";position;inset:0;pointer-events;border-radius;background(125deg,rgba(255,255,255,.40),transparent 32%,transparent 68%,rgba(255,255,255,.12));opacity:.9}.glass{content:"";position;left:-30%;top:-60%;width:75%;height:75%;pointer-events;border-radius:50%;background(circle,rgba(255,255,255,.45),transparent 70%);opacity:.5;transform(-18deg)}.glass > *{position;z-index:1}
+.dark-glass{background(--darkglass)!important;border:1px solid var(--darkstroke)!important;backdrop-filter(28px) saturate(160%);-webkit-backdrop-filter(28px) saturate(160%);color:#fff}
+body{content:"";position;inset:-10%;pointer-events;z-index:-2;opacity:.42;background(circle at 22% 34%,rgba(255,255,255,.72) 0 2px,transparent 3px),radial-gradient(circle at 74% 22%,rgba(255,255,255,.55) 0 2px,transparent 3px),radial-gradient(circle at 63% 78%,rgba(255,255,255,.45) 0 2px,transparent 3px);background-size:150px 150px,190px 190px,220px 220px;animation 24s ease-in-out infinite alternate}
+@keyframes drift{from{transform(-10px,-6px,0) scale(1)}to{transform(10px,8px,0) scale(1.02)}}
+.bubbles{position;inset:0;z-index:-3;pointer-events;overflow}
+.bubble{position;border-radius:50%;filter(38px);background(circle at 35% 30%,rgba(136,197,106,.38),rgba(136,197,106,.05) 70%,transparent 75%)}
+.bubble.b2{background(circle at 35% 30%,rgba(88,169,147,.32),rgba(88,169,147,.04) 70%,transparent 75%)}
+.bubble.b3{background(circle at 35% 30%,rgba(212,239,116,.30),rgba(212,239,116,.04) 70%,transparent 75%)}
+.b1{width:420px;height:420px;left:-8%;top:6%;animation 5.5s ease-in-out infinite alternate}
+.b2{width:300px;height:300px;right:-6%;top:22%;animation 4.5s ease-in-out infinite alternate}
+.b3{width:260px;height:260px;left:12%;top:58%;animation 6.5s ease-in-out infinite alternate}
+.b4{width:340px;height:340px;right:6%;top:72%;animation 7s ease-in-out infinite alternate-reverse}
+.b5{width:220px;height:220px;left:44%;top:38%;animation 5s ease-in-out infinite alternate-reverse}
+@keyframes floatA{to{transform(70px,90px) scale(1.12)}}
+@keyframes floatB{to{transform(-80px,60px) scale(.92)}}
+@keyframes floatC{to{transform(60px,-75px) scale(1.1)}}
+.topbar{position;top:0;z-index:99;height:72px;background(239,245,240,.66);backdrop-filter(20px);border-bottom:1px solid rgba(255,255,255,.72)}
+.topbar-inner{height:100%;display;align-items;justify-content}
+.logo{font-size:22px;font-weight:950;letter-spacing:-.05em}.logo i{color:#5f9b4c;font-style}
+.nav{display;gap:7px}.nav a{padding:9px 12px;border-radius:999px;color:#5c6963;font-size:13px;font-weight:750}.nav a{background(255,255,255,.57);color(--ink)}
+.nav .primary{background(--ink);color:#fff;box-shadow:0 8px 24px rgba(13,36,27,.16)}
+.side-index{position;right:26px;top:50%;transform(-50%);z-index:60;display;flex-direction;padding:10px 0;background(255,255,255,.40);backdrop-filter(22px) saturate(170%);-webkit-backdrop-filter(22px) saturate(170%);border:1px solid var(--stroke);border-radius:20px;box-shadow(--shadow)}
+.side-index a{display;align-items;gap:10px;padding:8px 16px 8px 12px;font-size:11.5px;font-weight:800;color:#6b7972;text-decoration;white-space;transition:.2s}
+.side-index a .si-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background(13,36,27,.22);transition:.2s}
+.side-index a{color(--ink)}
+.side-index a.active{color(--ink)}
+.side-index a.active .si-dot{background:#2f6b4f;transform(1.3)}
+@media(max-width:980px){.side-index{display}}
+.progress{position;top:0;left:0;height:3px;width:0;background(90deg,var(--lime),var(--teal));z-index:100}
+
+.hero{padding:60px 0 34px}
+.hero-grid{display;grid-template-columns:1.08fr .92fr;gap:22px;align-items}
+.hero-copy{padding:48px;border-radius:34px;min-height:485px;display;flex-direction;justify-content}
+.pill{display;align-items;gap:8px;width;padding:8px 11px;border-radius:999px;background(227,243,234,.76);font-size:11px;font-weight:900;letter-spacing:.08em;text-transform;color:#35644d;border:1px solid rgba(98,169,130,.16)}
+h1{font-size(48px,7vw,82px);line-height:.93;letter-spacing:-.075em;margin:18px 0 22px}
+.hero-copy p{font-size:18px;color:#596860;max-width:650px;margin:0}
+.cta-row{display;gap:10px;flex-wrap;margin-top:27px}
+.btn{border:1px solid rgba(13,36,27,.12);padding:13px 17px;border-radius:999px;font-weight:900;transition:.22s}
+.btn.dark{background(--ink);color:#fff;border-color(255,255,255,.1)}.btn.soft{background(255,255,255,.55)}
+.btn{transform(-2px);box-shadow:0 13px 30px rgba(13,36,27,.14)}
+.hero-foot{margin-top:20px;font-size:12px;color:#78847e}
+.hero-visual{border-radius:34px;overflow;position;min-height:485px;background(145deg,rgba(11,37,28,.93),rgba(35,78,61,.76));border:1px solid rgba(255,255,255,.16);box-shadow(--shadow);color:#fff}
+.orb{position;border-radius:50%;filter(1px)}
+.o1{width:260px;height:260px;right:-40px;top:-45px;background(circle at 35% 35%,rgba(212,239,116,.75),rgba(212,239,116,.08) 68%,transparent 70%)}
+.o2{width:210px;height:210px;left:-70px;bottom:-55px;background(circle at 60% 40%,rgba(88,169,147,.55),rgba(88,169,147,.05) 68%,transparent 70%)}
+.hero-visual-inner{position;height:100%;padding:28px;display;flex-direction}
+.mini-head{font-size:11px;letter-spacing:.12em;text-transform;color(255,255,255,.48);font-weight:900}
+.big-statement{font-size:31px;font-weight:950;letter-spacing:-.045em;max-width:470px;margin-top:12px}
+.stat-orbit{flex:1;display;place-items;position}
+.core{width:160px;height:160px;border-radius:50%;display;place-items;text-align;background(circle at 40% 30%,rgba(255,255,255,.20),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.22);box-shadow 0 1px 0 rgba(255,255,255,.24),0 18px 50px rgba(0,0,0,.18)}
+.core b{display;font-size:40px;letter-spacing:-.06em;color(--lime)}.core span{display;font-size:10px;color(255,255,255,.57);text-transform;letter-spacing:.08em}
+.orbit{position;border:1px solid rgba(255,255,255,.12);border-radius:50%;animation 24s linear infinite}.orbita{width:290px;height:190px}.orbitb{width:420px;height:280px;animation-duration:32s;animation-direction}.node{position;min-width:58px;height:40px;padding:0 7px;border-radius:14px;display;place-items;font-size:8.5px;letter-spacing:.03em;font-weight:950;text-align;line-height:1.1;white-space;background(255,255,255,.10);border:1px solid rgba(255,255,255,.20);backdrop-filter(10px)}
+.n1{top:24%;left:17%}.n2{top:31%;right:14%}.n3{bottom:20%;left:12%}.n4{bottom:14%;right:19%}
+@keyframes spin{to{transform(360deg)}}
+
+.section{padding:68px 0}.section-head{display;justify-content;gap:28px;align-items;margin-bottom:22px}
+.eyebrow{color:#5a9650;font-size:12px;text-transform;letter-spacing:.11em;font-weight:950}.section-head h2{font-size(33px,4.7vw,55px);letter-spacing:-.06em;line-height:1;margin:7px 0 0}.section-head p{max-width:520px;color(--muted);margin:0}
+.metrics{display;grid-template-columns(4,1fr);gap:12px}
+.metric{padding:20px;border-radius:25px;min-height:155px;transition:.25s}.metric{transform(-5px) rotate(.1deg)}
+.metric .small{font-size:11px;text-transform;letter-spacing:.08em;color:#77837e;font-weight:900}.metric .num{font-size:39px;font-weight:950;letter-spacing:-.055em;margin:10px 0 2px}.metric .sub{font-size:12px;color:#68766f}
+.metric.dark{background(--glass);border:1px solid var(--stroke);backdrop-filter(28px) saturate(170%);-webkit-backdrop-filter(28px) saturate(170%);color(--ink)}.metric.dark .small,.metric.dark .sub{color:#68766f}.metric.dark .num{color:#2f6b4f}
+
+.story{display;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.story .card{padding:25px;border-radius:28px;min-height:300px}
+.card h3{margin:0;font-size:22px;letter-spacing:-.03em}.card p{color(--muted);font-size:14px}
+.glass-chart{height:160px;border-radius:19px;background(255,255,255,.40);border:1px solid rgba(255,255,255,.65);overflow;margin-top:22px}
+.glass-chart svg{width:100%;height:100%}.chart-line{stroke-dasharray:900;stroke-dashoffset:900;animation 2.5s .2s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.chips{display;gap:8px;flex-wrap;margin-top:18px}.chip{padding:7px 9px;border-radius:999px;background(225,240,231,.78);border:1px solid rgba(93,156,110,.12);font-size:11px;font-weight:850;color:#3f6652}
+
+.framework{display;grid-template-columns(3,1fr);gap:12px}.framework-card{padding:24px;border-radius:27px;min-height:220px;border-top:3px solid var(--accent,transparent)}.framework-card(1){--accent:#88c56a}.framework-card(2){--accent:#6fa3d8}.framework-card(3){--accent:#efa66b}
+.icon{width:45px;height:45px;border-radius:15px;background(13,36,27,.9);display;place-items;color:#fff;font-weight:950}.framework-card h3{margin:16px 0 8px;font-size:21px}.framework-card p{margin:0;color:#647169;font-size:13px}
+
+.metric-map{display;grid-template-columns(2,1fr);gap:12px}.metric-card{padding:24px;border-radius:27px;transition:.25s;position;overflow}.metric-card{content:"";position;width:130px;height:130px;border-radius:50%;right:-45px;bottom:-55px;background(136,197,106,.11)}.metric-card{transform(-5px)}.metric-top{display;justify-content;gap:12px}.metric-card h3{margin:0;font-size:22px}.frequency{font-size:10px;font-weight:950;text-transform;letter-spacing:.08em;padding:6px 8px;border-radius:999px;background(255,255,255,.54);height}.metric-card p{font-size:13px;color:#627169}.metric-expand{margin-top:16px;border-top:1px solid rgba(13,36,27,.08);padding-top:14px;max-height:0;opacity:0;transform(18px);overflow;transition .75s cubic-bezier(.22,1,.36,1),opacity .5s ease,transform .75s cubic-bezier(.22,1,.36,1)}.metric-card.open .metric-expand{max-height:360px;opacity:1;transform}
+
+.lab{padding:28px;border-radius:31px;background(--glass);backdrop-filter(30px) saturate(170%);-webkit-backdrop-filter(30px) saturate(170%);border:1px solid var(--stroke);box-shadow(--shadow);color(--ink)}
+.lab .mini-head{color(13,36,27,.5)}
+.lab-top{display;justify-content;gap:20px;align-items}.lab-top h3{font-size:27px;letter-spacing:-.04em;margin:7px 0 0}.lab-top p{max-width:560px;margin:0;color:#5c6963;font-size:13px}
+.lab-grid{display;grid-template-columns(2,1fr);gap:12px;margin-top:18px}
+.model{border-radius:24px;background(255,255,255,.40);backdrop-filter(16px);-webkit-backdrop-filter(16px);border:1px solid rgba(255,255,255,.65);padding:20px;overflow;transition:.28s}
+.model{background(255,255,255,.55);transform(-2px)}.model h4{font-size:19px;margin:0;color(--ink)}.model .desc{font-size:12px;color:#5c6963;margin-top:5px}
+.stage{margin-top:16px;background(255,255,255,.34);border:1px solid rgba(255,255,255,.6);border-radius:18px;padding:15px;min-height:230px}
+.togglebar{display;gap:7px;flex-wrap}.togglebar button{border:1px solid rgba(13,36,27,.14);background(255,255,255,.5);color:#3e4a43;padding:8px 10px;border-radius:999px;font-size:11px;font-weight:850}.togglebar button.active{background:#2f6b4f;border-color:#2f6b4f;color:#fff}
+.dots{display;grid-template-columns(10,1fr);gap:5px;margin-top:14px}.dot{aspect-ratio:1;border-radius:50%;background(13,36,27,.14);transition:.35s}.dot.hot{background:#2f6b4f;transform(-2px)}
+.effect-bars{display;gap:8px;margin-top:15px}.effect-row{display;grid-template-columns:115px 1fr 50px;gap:8px;align-items;font-size:10px;color:#5c6963}.effect-track{height:8px;border-radius:99px;background(13,36,27,.09);overflow}.effect-track i{display;height:100%;border-radius:99px;background(90deg,var(--teal),#2f6b4f);transition:.6s}.effect-row b{color(--ink);text-align}
+.curve-wrap{position;height:135px;margin-top:7px}.curve-wrap svg{width:100%;height:100%}.curve-a{stroke:#2f6b4f}.curve-b{stroke(--teal)}.legend{display;gap:12px;font-size:10px;color:#5c6963;margin-top:6px}.leg{display;align-items;gap:5px}.swatch{width:18px;height:3px;border-radius:99px}.beforeafter{display;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.score{padding:14px;border-radius:15px;background(255,255,255,.5);border:1px solid rgba(13,36,27,.08)}.score small{font-size:10px;color:#68766f;font-weight:900}.score strong{display;font-size:30px;margin-top:3px;color(--ink)}.score-note{display;font-size:9px;color:#8b968f;margin-top:2px}.change-arrow{text-align;margin-top:12px;font-size:13px;color:#5c6963}.change-arrow span{color:#2f6b4f;font-size:20px;padding:0 7px}.change-arrow b{color:#2f6b4f;margin-left:8px}.paired-tabs{margin-top:12px}.paired-view{animation .35s}.mini-bars{display;align-items;justify-content;height:128px;margin-top:16px;border-bottom:1px solid rgba(13,36,27,.1);gap:16px}.mini-bars>div{height:100%;display;flex:1;flex-direction;justify-content;align-items;gap:5px;font-size:9px;color:#68766f}.mini-bars i{display;width:42px;max-width:70%;background(180deg,#7cb893,#2f6b4f);border-radius:7px 7px 0 0;transition:.5s}.mini-bars b{font-size:11px;color(--ink)}.test-card{display;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.test-card>div{padding:14px;border-radius:15px;background(255,255,255,.5);border:1px solid rgba(13,36,27,.08)}.test-card small{display;font-size:9px;color:#68766f;font-weight:900}.test-card strong{display;font-size:22px;color:#2f6b4f;margin-top:6px}.test-card span{font-size:9px;color:#8b968f}
+.sim-grid{display;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}.sim-values{display;align-items;gap:4px;height:125px;border-bottom:1px solid rgba(13,36,27,.09);padding:4px}.sim-values i{flex:1;min-width:3px;border-radius:4px 4px 0 0;background(180deg,#7cb893,#2f6b4f);height:20%;transition:.35s}.sim-result{padding:14px;border-radius:16px;background(255,255,255,.5);border:1px solid rgba(13,36,27,.09)}.sim-result .big{font-size:30px;font-weight:950;color:#2f6b4f;letter-spacing:-.05em}.run{margin-top:12px;width:100%;border:1px solid rgba(13,36,27,.15);background(255,255,255,.6);color(--ink);padding:10px;border-radius:13px;font-weight:900}.run
+.technical{margin-top:12px;padding:13px;border-radius:14px;background(255,255,255,.4);font-size:11px;color:#3e4a43;display}.model.show .technical{display;animation .25s}.learn{margin-top:11px;border:0;background;color:#2f6b4f;padding:0;font-weight:900;font-size:11px}
+.sample-note{margin-top:12px;padding:16px;border-radius:18px;background(255,255,255,.4);border:1px solid rgba(255,255,255,.6);font-size:12px;color:#5c6963}.sample-note b{color(--ink)}
+.chart-wrap{width:100%;overflow-x}.chart-svg{width:100%;height;display}
+
+.operate{display;grid-template-columns:1.1fr .9fr;gap:14px}.steps{position;width(820px,100%);aspect-ratio:1.72/1;margin:12px auto 0;display}.step{position;width:166px;min-height:156px;padding:18px;border-radius:23px;display;flex-direction;justify-content;z-index:2}.step(3){left:50%;top:0;transform(-50%)}.step(4){right:0;top:27%}.step(5){right:7%;bottom:0}.step(6){left:7%;bottom:0}.step(7){left:0;top:27%}.step .no{font-size:11px;color:#649b56;font-weight:950}.step h3{font-size:17px;margin:8px 0}.step p{font-size:11px;color:#637069;margin:0}.step-arrow{position;right:12px;top:10px;color:#5a9650;font-size:22px;font-weight:800;line-height:1}.cycle-arrows{position;inset:0;width:100%;height:100%;z-index:1;overflow}.cycle-arrows path{fill;stroke:#58a993;stroke-width:2.4;stroke-linecap;opacity:.62}.cycle-arrows marker path{fill:#58a993;stroke}.steps{content:"";position;left:50%;top:50%;width:96px;height:96px;transform(-50%,-50%);border-radius:50%;background(255,255,255,.34);border:1px solid rgba(255,255,255,.72);box-shadow:0 10px 28px rgba(13,36,27,.08),inset 0 1px 0 rgba(255,255,255,.75);backdrop-filter(12px);-webkit-backdrop-filter(12px);z-index:1}.loop{padding:26px;border-radius:28px;display;flex-direction;justify-content}.loop h3{font-size:24px;letter-spacing:-.035em;margin:0}.loop p{font-size:13px;color(--muted)}.loopline{height:9px;border-radius:99px;background(90deg,#88c56a,#58a993,#88c56a);position;margin:16px 0}.loopline{content:"";width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.34);position;left:0;top:-3px;animation 3.2s ease-in-out infinite}@keyframes travel{50%{left(100% - 15px)}100%{left:0}}
+.burden{display;grid-template-columns:1fr 1fr;gap:12px}.quadrants{display;grid-template-columns:1fr 1fr}.q{padding:24px;min-height:175px;background(--glass);backdrop-filter(28px) saturate(170%);-webkit-backdrop-filter(28px) saturate(170%);border-left:3px solid var(--accent,transparent)}.q(1){--accent:#88c56a}.q(2){--accent:#6fa3d8}.q(3){--accent:#efa66b}.q(4){--accent:#9aa79f}.q h3{margin:8px 0}.q p{font-size:12px;color:#68766f}.table{padding:22px;border-radius:28px}.table table{width:100%;border-collapse;font-size:12px}.table th,.table td{padding:10px;border-bottom:1px solid rgba(13,36,27,.08);text-align}.table th{font-size:10px;text-transform;letter-spacing:.08em;color:#728078}
+
+.footer{padding:50px 0 65px;background(10,32,24,.92);color:#fff}.footer p{max-width:620px;color(255,255,255,.55);font-size:12px}.footer .logo{font-size:27px}.footer-grid{display;justify-content;gap:30px;align-items}
+.float{position;right:18px;bottom:18px;z-index:70;border:1px solid rgba(255,255,255,.18);background(13,36,27,.86);color:#fff;padding:12px 14px;border-radius:999px;font-weight:900;box-shadow:0 18px 40px rgba(13,36,27,.22);backdrop-filter(14px)}
+
+/* Subtle interaction: cards lift slightly on hover without continuous motion. */
+.framework-card,.metric-card,.model,.step,.story .card,.metric,.q,.table,.loop,.burden > *, .lab,.governance-card {
+transition .22s ease, box-shadow .22s ease, background-color .22s ease, border-color .22s ease;
+}
+.framework-card,.metric-card,.model,.step,.story .card,.metric,.q,.table,.loop,.burden > *,.lab,.governance-card {
+transform(-4px);
+box-shadow:0 20px 48px rgba(13,36,27,.12), 0 1px 0 rgba(255,255,255,.65) inset;
+}
+.step(3){transform(-50%) translateY(-4px)}
+.cycle-core{position;left:50%;top:50%;transform(-50%,-50%);width:96px;height:96px;border-radius:50%;display;flex-direction;align-items;justify-content;text-align;z-index:3;color(--ink)}
+.cycle-core strong{font-size:14px;line-height:1.05;letter-spacing:-.03em}.cycle-core span{font-size:8px;color:#6c7872;margin-top:5px;text-transform;letter-spacing:.06em}
+@media(max-width:920px){.hero-grid,.operate,.burden{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.framework,.metric-map{grid-template-columns:1fr 1fr}.lab-grid{grid-template-columns:1fr 1fr}.steps{width:100%;aspect-ratio;display;grid-template-columns:1fr 1fr;gap:8px}.step{position!important;inset!important;transform!important}.steps,.cycle-arrows,.cycle-core{display}.story{grid-template-columns:1fr}}
+@media(max-width:620px){.wrap{width(100% - 24px)}.nav{display}.hero{padding-top:30px}.hero-copy{padding:32px 24px;min-height:430px}.hero-visual{min-height:430px}.metrics,.framework,.metric-map,.lab-grid,.steps,.burden{grid-template-columns:1fr}.quadrants{grid-template-columns:1fr}.section{padding:52px 0}.section-head{display}.section-head p{margin-top:13px}.footer-grid{display}.float{right:10px;bottom:10px}}
+</style>
+
+</head>
+<body>
+<div class="bubbles" aria-hidden="true"><span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span><span class="bubble b4"></span><span class="bubble b5"></span></div>
+<div class="progress" id="progress"></div>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="logo" href="#top">Food<i>Filled</i></a>
+    <nav class="nav">
+      <a class="primary" href="#evidence">Enter Evidence Lab ↗</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="side-index" id="sideIndex" aria-label="Section index">
+  <a href="#impact" data-label="Impact"><span class="si-dot"></span>Impact</a>
+  <a href="#framework" data-label="Framework"><span class="si-dot"></span>Framework</a>
+  <a href="#measures" data-label="Measures"><span class="si-dot"></span>Measures</a>
+  <a href="#evidence" data-label="Evidence Lab"><span class="si-dot"></span>Evidence Lab</a>
+  <a href="#operating" data-label="Operating Model"><span class="si-dot"></span>Operating Model</a>
+  <a href="#cost" data-label="Cost & Admin"><span class="si-dot"></span>Cost &amp; Admin</a>
+  <a href="#next" data-label="Next Steps"><span class="si-dot"></span>Next Steps</a>
+</nav>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy glass">
+      <span class="pill">Impact intelligence · FY25</span>
+      <h1>Rescue food.<br><span style="color:#5b9550">Create value.</span><br>Prove the difference.</h1>
+      <p>FoodFilled's community-led model turns surplus food into meals, connections and support. The next step is to show the wider value created — clearly, consistently and credibly.</p>
+      <div class="cta-row">
+        <a class="btn dark" href="#impact">Step inside the dashboard ↓</a>
+        <a class="btn soft" href="#evidence">Explore the Evidence Lab</a>
+      </div>
+      <div class="hero-foot">304,140 meals · 152,070 kg rescued · 336 volunteers · FY25</div>
+    </div>
+
+<div class="hero-visual">
+  <div class="orb o1"></div><div class="orb o2"></div>
+  <div class="hero-visual-inner">
+    <div class="mini-head">One connected evidence system</div>
+    <div class="big-statement">From what FoodFilled does → to what that activity means.</div>
+    <div class="stat-orbit">
+      <div class="orbit orbita"></div><div class="orbit orbitb"></div>
+      <div class="node n1">OUTPUT</div><div class="node n2">OUTCOME</div><div class="node n3">VALUE</div><div class="node n4">ACTION</div>
+      <div class="core"><div><b>4</b><span>core impact measures</span></div></div>
+    </div>
+  </div>
+</div>
+
+  </div>
+</section>
+
+<section class="section" id="impact">
+<div class="wrap">
+  <div class="section-head">
+    <div><div class="eyebrow">FoodFilled today</div><div class="section-head"><h2>Scale you can see.<br>Value you can investigate.</h2></div></div>
+    <p>FY25 already gives FoodFilled a strong operational baseline. The framework builds on these measures rather than replacing them.</p>
+  </div>
+
+  <div class="metrics">
+    <div class="metric glass dark"><div class="small">Food rescued</div><div class="num counter" data-target="152070">0</div><div class="sub">kg in FY25</div></div>
+    <div class="metric glass"><div class="small">Meals provided</div><div class="num counter" data-target="304140">0</div><div class="sub">FY25</div></div>
+    <div class="metric glass"><div class="small">Volunteers engaged</div><div class="num counter" data-target="336">0</div><div class="sub">FY25</div></div>
+    <div class="metric glass"><div class="small">Food donations</div><div class="num counter" data-target="5069">0</div><div class="sub">coordinated, collected & delivered</div></div>
+  </div>
+
+  <div class="story">
+    <div class="card glass">
+      <h3>Growth is already visible</h3>
+      <p>FY25 meals provided increased 48% on FY24, alongside a larger network of food retailers and food relief agencies.</p>
+      <div class="glass-chart">
+        <svg viewBox="0 0 700 160" preserveAspectRatio="none">
+          <path d="M0 131 C70 128 94 111 140 115 S205 91 255 99 S330 73 374 84 S445 58 492 65 S555 39 606 49 S657 30 700 23" fill="none" stroke="#5f9953" stroke-width="6" stroke-linecap="round" class="chart-line"/>
+          <path d="M0 150 L0 131 C70 128 94 111 140 115 S205 91 255 99 S330 73 374 84 S445 58 492 65 S555 39 606 49 S657 30 700 23 L700 150Z" fill="rgba(136,197,106,.14)"/>
+        </svg>
+      </div>
+      <div class="chips"><span class="chip">152 agency partnerships</span><span class="chip">140 food retailers</span><span class="chip">over 300k meals in the past 12 months</span></div>
+    </div>
+    <div class="card glass">
+      <h3>The question is now bigger</h3>
+      <p>Outputs tell stakeholders how much FoodFilled does. Outcome and economic measures address what changes and what that change is worth.</p>
+      <div style="margin-top:24px;display:grid;gap:9px">
+        <div style="padding:13px;border-radius:16px;background:rgba(225,241,229,.62)"><b>Activity</b><br><span style="font-size:12px;color:#65726c">Food rescued · meals · volunteer activity</span></div>
+        <div style="padding:13px;border-radius:16px;background:rgba(226,238,246,.62)"><b>Outcome</b><br><span style="font-size:12px;color:#65726c">Retention · recipient wellbeing</span></div>
+        <div style="padding:13px;border-radius:16px;background:rgba(250,231,214,.62)"><b>Economic value</b><br><span style="font-size:12px;color:#65726c">Replacement value · value per $ donated</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="framework" style="padding-top:28px">
+<div class="wrap">
+  <div class="section-head">
+    <div><div class="eyebrow">Impact framework</div><div class="section-head"><h2>Three layers, one story</h2></div></div>
+    <p>The reporting architecture separates the evidence types so claims stay proportionate to what the data can actually support.</p>
+  </div>
+  <div class="framework">
+    <div class="framework-card glass"><div class="icon">01</div><h3>Credible outputs</h3><p>The scale of activity: food rescued, meals provided, volunteers, shifts and related operational outputs.</p></div>
+    <div class="framework-card glass"><div class="icon">02</div><h3>Stakeholder outcomes</h3><p>Change over time for the people and volunteers connected to FoodFilled, including retention and wellbeing.</p></div>
+    <div class="framework-card glass"><div class="icon">03</div><h3>Economic value</h3><p>Conservative estimates that translate rescued food and donated resources into a common dollar frame for funders and donors.</p></div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="measures">
+<div class="wrap">
+  <div class="section-head">
+    <div><div class="eyebrow">Impact measures</div><div class="section-head"><h2>Four questions the dashboard can answer</h2></div></div>
+    <p>Each measure combines a clear question, proportionate data collection and a defined reporting target.</p>
+  </div>
+  <div class="metric-map">
+    <article class="metric-card glass">
+      <div class="metric-top"><h3>Volunteer retention</h3><span class="frequency">Quarterly</span></div>
+      <p>What percentage of new volunteers are still active at 6 and 12 months — and how does that differ by recruitment channel?</p>
+      <div class="metric-expand">
+        <b>Data</b><p>Salesforce start/exit dates and recruitment source from onboarding records; mostly automated.</p>
+        <b>Burden</b><p>Quarterly review with approximately one hour of analysis.</p>
+        <b>Target</b><p>Establish a baseline, then improve 12-month retention year-on-year.</p>
+      </div>
+    </article>
+
+<article class="metric-card glass">
+  <div class="metric-top"><h3>Wellbeing improvement</h3><span class="frequency">Quarterly / biannual</span></div>
+  <p>How does wellbeing change among people experiencing food insecurity before and after receiving food support?</p>
+  <div class="metric-expand">
+    <b>Data</b><p>Short surveys through partner agencies, linked using anonymous participant IDs.</p>
+    <b>Burden</b><p>Approximately 3–5 minutes per survey plus limited analysis time.</p>
+    <b>Target</b><p>Establish a baseline, then demonstrate sustained positive improvement over time.</p>
+  </div>
+</article>
+
+<article class="metric-card glass">
+  <div class="metric-top"><h3>Food replacement value</h3><span class="frequency">Annual</span></div>
+  <p>What would the rescued food cost if recipients or agencies had to purchase an equivalent amount?</p>
+  <div class="metric-expand">
+    <b>Data</b><p>Calibrated kilograms rescued multiplied by a researched and cited average dollar value per kilogram.</p>
+    <b>Burden</b><p>Approximately half a day of annual analysis.</p>
+    <b>Target</b><p>Publish a conservative “at least $X” estimate with assumptions clearly stated.</p>
+  </div>
+</article>
+
+<article class="metric-card glass">
+  <div class="metric-top"><h3>Value per $ donated</h3><span class="frequency">Annual</span></div>
+  <p>How much estimated community value is created for each dollar donated to FoodFilled?</p>
+  <div class="metric-expand">
+    <b>Data</b><p>Economic value estimates, financial statements, and explicit attribution and deadweight assumptions.</p>
+    <b>Burden</b><p>Minimal additional burden once the broader economic-value model exists.</p>
+    <b>Target</b><p>Publish a conservative “at least $X of value per $1 donated” estimate.</p>
+  </div>
+</article>
+
+  </div>
+</div>
+</section>
+
+<section class="section" id="evidence">
+<div class="wrap">
+  <div class="lab">
+    <div class="lab-top">
+      <div><div class="eyebrow" style="color:#2f6b4f">Evidence Lab</div><h2 style="color:var(--ink);margin:7px 0 0;font-size:clamp(34px,4.6vw,53px)">See the analysis happen.</h2></div>
+      <p>These interactive demonstrations show what each statistical method is doing with FoodFilled’s proposed measures. The visuals are simplified explanations of the methodology, not substitute analyses.</p>
+    </div>
+
+<div class="lab-grid">
+  <!-- GLM -->
+  <article class="model" id="glm">
+    <h4>Missed-shift model</h4>
+    <div class="desc">Generalised Linear Model · identify patterns associated with missed shifts</div>
+    <div class="stage">
+      <div style="font-size:10px;color:#8b968f;font-weight:900;text-transform:uppercase;letter-spacing:.08em">Adjust the observed pattern</div>
+      <div class="togglebar" style="margin-top:10px">
+        <button class="active glm-toggle" data-mode="balanced">Balanced</button>
+        <button class="glm-toggle" data-mode="channel">Channel effect</button>
+        <button class="glm-toggle" data-mode="month">Month effect</button>
+      </div>
+      <div class="dots" id="glmDots"></div>
+      <div class="effect-bars">
+        <div class="effect-row"><span>Recruitment channel</span><div class="effect-track"><i id="g1" style="width:30%"></i></div><b id="gv1">30%</b></div>
+        <div class="effect-row"><span>Month / timing</span><div class="effect-track"><i id="g2" style="width:22%"></i></div><b id="gv2">22%</b></div>
+        <div class="effect-row"><span>Shift pattern</span><div class="effect-track"><i id="g3" style="width:38%"></i></div><b id="gv3">38%</b></div>
+      </div>
+      <button class="learn" data-learn="glm">What is the model doing? +</button>
+      <div class="technical" id="glmLearn">Several observed variables are entered together. The model estimates the relationship between each factor and the missed-shift outcome while holding the other included factors constant. This helps distinguish overlapping patterns, but the result remains an association unless a stronger causal design is used.</div>
+    </div>
+  </article>
+
+  <!-- KM -->
+  <article class="model" id="km">
+    <h4>Volunteer retention</h4>
+    <div class="desc">Kaplan–Meier analysis · compare how long different cohorts remain active</div>
+    <div class="stage">
+      <div class="togglebar">
+        <button class="active km-toggle" data-group="cohort">Cohort A vs B</button>
+        <button class="km-toggle" data-group="channel">Channel A vs B</button>
+      </div>
+      <div class="curve-wrap">
+        <svg viewBox="0 0 620 135" preserveAspectRatio="none">
+          <path id="kmA" class="curve-a" d="M0 18 L70 18 L72 29 L135 29 L137 39 L210 39 L212 53 L285 53 L287 64 L370 64 L372 77 L445 77 L447 91 L545 91 L547 103 L620 103" fill="none" stroke-width="5" stroke-linecap="round"/>
+          <path id="kmB" class="curve-b" d="M0 18 L85 18 L87 38 L155 38 L157 45 L230 45 L232 60 L320 60 L322 73 L420 73 L422 85 L520 85 L522 95 L620 95" fill="none" stroke-width="5" stroke-linecap="round" opacity=".88"/>
+        </svg>
+      </div>
+      <div class="legend"><span class="leg"><i class="swatch" style="background:#d4ef74"></i> Group A</span><span class="leg"><i class="swatch" style="background:#58a993"></i> Group B</span></div>
+      <div class="method-output" style="margin-top:12px">Each downward step represents an observed exit. Volunteers who are still active contribute information up to the end of their observed period. A log-rank test compares the overall curves.</div>
+      <button class="learn" data-learn="km">Why this matters +</button>
+      <div class="technical" id="kmLearn">Instead of reducing retention to one number, the curve uses the timing of exits. This lets FoodFilled estimate the proportion remaining active at six and twelve months and investigate whether different recruitment cohorts or channels have different retention patterns.</div>
+    </div>
+  </article>
+
+  <!-- Paired -->
+  <article class="model" id="paired">
+    <h4>Wellbeing change</h4>
+    <div class="desc">Paired t-test · each person becomes their own before/after comparison</div>
+    <div class="stage">
+      <div class="togglebar paired-tabs">
+        <button class="active paired-tab" data-view="person">1 · One person</button>
+        <button class="paired-tab" data-view="sample">2 · Matched sample</button>
+        <button class="paired-tab" data-view="test">3 · Statistical test</button>
+      </div>
+      <div class="paired-view" id="pairedPerson">
+        <div class="beforeafter">
+          <div class="score"><small>BEFORE</small><strong>54</strong><span class="score-note">wellbeing score</span></div>
+          <div class="score"><small>AFTER</small><strong>66</strong><span class="score-note">wellbeing score</span></div>
+        </div>
+        <div class="change-arrow">54 <span>→</span> 66 <b>+12 points</b></div>
+        <div class="method-output">The same person is measured twice, so the comparison is not between two unrelated groups. Their individual change becomes the unit of analysis.</div>
+      </div>
+      <div class="paired-view" id="pairedSample" style="display:none">
+        <div class="mini-bars">
+          <div><span>Improved</span><i style="height:76%"></i><b>68%</b></div>
+          <div><span>No change</span><i style="height:25%"></i><b>18%</b></div>
+          <div><span>Declined</span><i style="height:19%"></i><b>14%</b></div>
+        </div>
+        <div class="method-output">Across a matched sample, the analysis looks at all individual before→after changes. The headline result is the mean change with a 95% confidence interval.</div>
+      </div>
+      <div class="paired-view" id="pairedTest" style="display:none">
+        <div class="test-card"><div><small>MEAN CHANGE</small><strong>+8.4</strong><span>points</span></div><div><small>95% CI</small><strong>+5.1 to +11.7</strong><span>illustrative</span></div></div>
+        <div class="method-output">The paired t-test asks whether the average change differs from zero. A Wilcoxon signed-rank test is then used as a robustness check if the bounded wellbeing scores are skewed.</div>
+      </div>
+      <button class="learn" data-learn="paired">Why also run Wilcoxon? +</button>
+      <div class="technical" id="pairedLearn">A paired t-test is the headline test because it is straightforward to communicate and works well for the planned sample sizes. A Wilcoxon signed-rank test provides a robustness check if the bounded wellbeing scores are skewed.</div>
+      <div class="chart-wrap" style="margin-top:16px"><svg viewBox="0 0 640 320" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+
+<text x="4" y="16" font-size="11.5" font-weight="800" fill="#0d241b">Paired t-test: what each sample can detect</text>
+<rect x="64" y="123.2" width="536" height="83.2" fill="rgba(13,36,27,.05)"/>
+<text x="594" y="200.5" font-size="9" fill="#5c6963" text-anchor="end">small-moderate effects</text>
+<line x1="64" y1="262.0" x2="600" y2="262.0" stroke="rgba(13,36,27,.08)"/>
+<text x="56" y="265.0" font-size="8.5" fill="#8b968f" text-anchor="end">0.0</text>
+<line x1="64" y1="234.2" x2="600" y2="234.2" stroke="rgba(13,36,27,.08)"/>
+<text x="56" y="237.2" font-size="8.5" fill="#8b968f" text-anchor="end">0.1</text>
+<line x1="64" y1="206.5" x2="600" y2="206.5" stroke="rgba(13,36,27,.08)"/>
+<text x="56" y="209.5" font-size="8.5" fill="#8b968f" text-anchor="end">0.2</text>
+<line x1="64" y1="178.8" x2="600" y2="178.8" stroke="rgba(13,36,27,.08)"/>
+<text x="56" y="181.8" font-size="8.5" fill="#8b968f" text-anchor="end">0.3</text>
+<line x1="64" y1="151.0" x2="600" y2="151.0" stroke="rgba(13,36,27,.08)"/>
+<text x="56" y="154.0" font-size="8.5" fill="#8b968f" text-anchor="end">0.4</text>
+<line x1="64" y1="123.2" x2="600" y2="123.2" stroke="rgba(13,36,27,.08)"/>
+<text x="56" y="126.2" font-size="8.5" fill="#8b968f" text-anchor="end">0.5</text>
+<line x1="64" y1="95.5" x2="600" y2="95.5" stroke="rgba(13,36,27,.08)"/>
+<text x="56" y="98.5" font-size="8.5" fill="#8b968f" text-anchor="end">0.6</text>
+<line x1="64" y1="67.8" x2="600" y2="67.8" stroke="rgba(13,36,27,.08)"/>
+<text x="56" y="70.8" font-size="8.5" fill="#8b968f" text-anchor="end">0.7</text>
+<line x1="64" y1="40.0" x2="600" y2="40.0" stroke="rgba(13,36,27,.08)"/>
+<text x="56" y="43.0" font-size="8.5" fill="#8b968f" text-anchor="end">0.8</text>
+<text x="93.0" y="278" font-size="8.5" fill="#8b968f" text-anchor="middle">25</text>
+<text x="165.4" y="278" font-size="8.5" fill="#8b968f" text-anchor="middle">50</text>
+<text x="237.8" y="278" font-size="8.5" fill="#8b968f" text-anchor="middle">75</text>
+<text x="310.3" y="278" font-size="8.5" fill="#8b968f" text-anchor="middle">100</text>
+<text x="382.7" y="278" font-size="8.5" fill="#8b968f" text-anchor="middle">125</text>
+<text x="455.1" y="278" font-size="8.5" fill="#8b968f" text-anchor="middle">150</text>
+<text x="527.6" y="278" font-size="8.5" fill="#8b968f" text-anchor="middle">175</text>
+<text x="600.0" y="278" font-size="8.5" fill="#8b968f" text-anchor="middle">200</text>
+<path d="M 64.0 45.6 L 72.7 54.1 L 81.4 62.2 L 90.1 69.8 L 98.8 77.1 L 107.5 84.0 L 116.2 90.5 L 124.8 96.6 L 133.5 102.5 L 142.2 108.0 L 150.9 113.2 L 159.6 118.2 L 168.3 122.9 L 177.0 127.3 L 185.7 131.5 L 194.4 135.5 L 203.1 139.3 L 211.8 142.8 L 220.5 146.2 L 229.1 149.4 L 237.8 152.4 L 246.5 155.3 L 255.2 158.0 L 263.9 160.6 L 272.6 163.0 L 281.3 165.3 L 290.0 167.5 L 298.7 169.6 L 307.4 171.6 L 316.1 173.4 L 324.8 175.2 L 333.4 176.8 L 342.1 178.4 L 350.8 179.9 L 359.5 181.3 L 368.2 182.6 L 376.9 183.9 L 385.6 185.1 L 394.3 186.2 L 403.0 187.3 L 411.7 188.3 L 420.4 189.3 L 429.1 190.2 L 437.8 191.1 L 446.4 191.9 L 455.1 192.7 L 463.8 193.4 L 472.5 194.1 L 481.2 194.8 L 489.9 195.4 L 498.6 196.0 L 507.3 196.5 L 516.0 197.1 L 524.7 197.6 L 533.4 198.0 L 542.1 198.5 L 550.7 198.9 L 559.4 199.3 L 568.1 199.7 L 576.8 200.1 L 585.5 200.4 L 594.2 200.7" fill="none" stroke="#2f6b4f" stroke-width="2.4" stroke-linecap="round"/>
+<circle cx="124.8" cy="128.8" r="5.5" fill="#e8703a" stroke="#fff" stroke-width="1.4"/>
+<text x="132.8" y="114.8" font-size="9" font-weight="800" fill="#0d241b">36 volunteers</text>
+<text x="132.8" y="124.8" font-size="9" fill="#3e4a43">(12-mo retention): d = 0.48</text>
+<circle cx="171.2" cy="151.0" r="5.5" fill="#e8703a" stroke="#fff" stroke-width="1.4"/>
+<text x="179.2" y="137.0" font-size="9" font-weight="800" fill="#0d241b">52 consented</text>
+<text x="179.2" y="147.0" font-size="9" fill="#3e4a43">volunteers: d = 0.40</text>
+<circle cx="281.3" cy="178.8" r="5.5" fill="#e8703a" stroke="#fff" stroke-width="1.4"/>
+<text x="289.3" y="164.8" font-size="9" font-weight="800" fill="#0d241b">90 recipient</text>
+<text x="289.3" y="174.8" font-size="9" fill="#3e4a43">pairs: d = 0.30</text>
+<text x="332" y="314" font-size="9" fill="#8b968f" text-anchor="middle">Matched before/after pairs</text>
+</svg></div>
+</div>
+</article>
+
+  <!-- Monte Carlo -->
+  <article class="model" id="mc">
+    <h4>Economic value</h4>
+    <div class="desc">Monte Carlo simulation · show a range of plausible economic outcomes</div>
+    <div class="stage">
+      <div class="sim-grid">
+        <div>
+          <div class="mini-head" style="color:#8b968f">Simulated scenarios</div>
+          <div class="sim-values" id="simBars"></div>
+        </div>
+        <div class="sim-result">
+          <div class="mini-head" style="color:#8b968f">Conservative output</div>
+          <div class="big" id="mcResult">≥ $0.70m</div>
+          <div style="font-size:11px;color:#68766f;margin-top:6px">Economic value</div>
+          <div style="font-size:11px;color:#5c6963;margin-top:14px"><b style="color:var(--ink)" id="mcDollar">≥ ~$1.50</b> per $1 donated (proxy)</div>
+        </div>
+      </div>
+      <button class="run" id="runMC">Run 1,000 scenarios ↻</button>
+      <div class="method-output" style="margin-top:11px">Rather than publish a single point estimate, the model repeatedly draws plausible values for the uncertain assumptions. The resulting distribution shows how sensitive the economic-value estimate is to those assumptions.</div>
+      <button class="learn" data-learn="mc">Why publish “at least”? +</button>
+      <div class="technical" id="mcLearn">The proposed communication uses a conservative lower-range estimate with assumptions clearly disclosed. The model can also be divided by $459k to produce the value-per-$1 range for the numbers register.</div>
+    </div>
+  </article>
+</div>
+
+<div class="lab-grid" style="margin-top:12px">
+  <article class="model" style="grid-column:1/-1">
+    <h4>Net FY26 value sensitivity</h4>
+    <div class="desc">Tornado chart · swing from each assumption's 5th→95th percentile</div>
+    <div class="stage" style="min-height:auto">
+      <div class="chart-wrap"><svg viewBox="0 0 660 360" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+
+<line x1="190.0" y1="36" x2="190.0" y2="312" stroke="rgba(13,36,27,.09)" stroke-width="1"/>
+<text x="190.0" y="328" font-size="10" fill="#7b8880" text-anchor="middle">$0.75m</text>
+<line x1="276.0" y1="36" x2="276.0" y2="312" stroke="rgba(13,36,27,.09)" stroke-width="1"/>
+<text x="276.0" y="328" font-size="10" fill="#7b8880" text-anchor="middle">$0.80m</text>
+<line x1="362.0" y1="36" x2="362.0" y2="312" stroke="rgba(13,36,27,.09)" stroke-width="1"/>
+<text x="362.0" y="328" font-size="10" fill="#7b8880" text-anchor="middle">$0.85m</text>
+<line x1="448.0" y1="36" x2="448.0" y2="312" stroke="rgba(13,36,27,.09)" stroke-width="1"/>
+<text x="448.0" y="328" font-size="10" fill="#7b8880" text-anchor="middle">$0.90m</text>
+<line x1="534.0" y1="36" x2="534.0" y2="312" stroke="rgba(13,36,27,.09)" stroke-width="1"/>
+<text x="534.0" y="328" font-size="10" fill="#7b8880" text-anchor="middle">$0.95m</text>
+<line x1="620.0" y1="36" x2="620.0" y2="312" stroke="rgba(13,36,27,.09)" stroke-width="1"/>
+<text x="620.0" y="328" font-size="10" fill="#7b8880" text-anchor="middle">$1.00m</text>
+<line x1="341.4" y1="32" x2="341.4" y2="316" stroke="#0d241b" stroke-width="1.4"/>
+<text x="341.4" y="28" font-size="10" font-weight="800" fill="#0d241b" text-anchor="middle">$0.838m baseline</text>
+<rect x="207.2" y="46.0" width="134.2" height="30" rx="6" fill="#b9d4ee"/>
+<rect x="341.4" y="46.0" width="295.8" height="30" rx="6" fill="#3f74b3"/>
+<text x="180" y="64.5" font-size="11.5" font-weight="750" fill="#33463b" text-anchor="end">Food value per kg</text>
+<text x="645.2" y="64.5" font-size="10" fill="#8b968f" font-style="italic">verify</text>
+<rect x="193.4" y="84.0" width="147.9" height="30" rx="6" fill="#f4cda0"/>
+<rect x="341.4" y="84.0" width="144.5" height="30" rx="6" fill="#d97f2b"/>
+<text x="180" y="102.5" font-size="11.5" font-weight="750" fill="#33463b" text-anchor="end">Attribution share</text>
+<text x="493.8" y="102.5" font-size="10" fill="#8b968f" font-style="italic">assumption</text>
+<rect x="250.2" y="122.0" width="91.2" height="30" rx="6" fill="#d97f2b"/>
+<rect x="341.4" y="122.0" width="89.4" height="30" rx="6" fill="#f4cda0"/>
+<text x="180" y="140.5" font-size="11.5" font-weight="750" fill="#33463b" text-anchor="end">Deadweight</text>
+<text x="438.8" y="140.5" font-size="10" fill="#8b968f" font-style="italic">assumption</text>
+<rect x="269.1" y="160.0" width="72.2" height="30" rx="6" fill="#b9d4ee"/>
+<rect x="341.4" y="160.0" width="72.2" height="30" rx="6" fill="#3f74b3"/>
+<text x="180" y="178.5" font-size="11.5" font-weight="750" fill="#33463b" text-anchor="end">Hours per shift</text>
+<text x="421.6" y="178.5" font-size="10" fill="#8b968f" font-style="italic">sourced</text>
+<rect x="274.3" y="198.0" width="67.1" height="30" rx="6" fill="#f4cda0"/>
+<rect x="341.4" y="198.0" width="74.0" height="30" rx="6" fill="#d97f2b"/>
+<text x="180" y="216.5" font-size="11.5" font-weight="750" fill="#33463b" text-anchor="end">kg correction factor</text>
+<text x="423.3" y="216.5" font-size="10" fill="#8b968f" font-style="italic">assumption</text>
+<rect x="307.0" y="236.0" width="34.4" height="30" rx="6" fill="#b9d4ee"/>
+<rect x="341.4" y="236.0" width="89.4" height="30" rx="6" fill="#3f74b3"/>
+<text x="180" y="254.5" font-size="11.5" font-weight="750" fill="#33463b" text-anchor="end">Replacement wage</text>
+<text x="438.8" y="254.5" font-size="10" fill="#8b968f" font-style="italic">sourced</text>
+<rect x="327.6" y="274.0" width="13.8" height="30" rx="6" fill="#b9d4ee"/>
+<rect x="341.4" y="274.0" width="17.2" height="30" rx="6" fill="#3f74b3"/>
+<text x="180" y="292.5" font-size="11.5" font-weight="750" fill="#33463b" text-anchor="end">Disposal cost per kg</text>
+<text x="366.6" y="292.5" font-size="10" fill="#8b968f" font-style="italic">verify</text>
+</svg></div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-end;font-size:10px;color:#68766f;margin-top:4px">
+            <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#3f74b3;margin-right:5px;vertical-align:-1px"></i>dark = 95th pct</span>
+            <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#b9d4ee;margin-right:5px;vertical-align:-1px"></i>light = 5th pct</span>
+            <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#d97f2b;margin-right:5px;vertical-align:-1px"></i>orange = placeholder assumption</span>
+            <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#3f74b3;margin-right:5px;vertical-align:-1px"></i>blue = sourced</span>
+          </div>
+        </div>
+      </article>
+      <article class="model" style="grid-column:1/-1">
+        <h4>FY26 value Monte Carlo distributions</h4>
+        <div class="desc">20,000 scenarios over sourced ranges</div>
+        <div class="stage" style="min-height:auto">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div class="chart-wrap"><svg viewBox="0 0 310 220" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+<text x="8" y="16" font-size="11.5" font-weight="800" fill="#0d241b">FY26 food replacement value</text>
+<rect x="66.0" y="24" width="163.2" height="152.0" fill="rgba(120,160,220,.14)"/>
+<rect x="34.00" y="155.06" width="9.25" height="20.94" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="43.85" y="158.12" width="9.25" height="17.88" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="53.69" y="145.35" width="9.25" height="30.65" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="63.54" y="144.33" width="9.25" height="31.67" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="73.38" y="134.11" width="9.25" height="41.89" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="83.23" y="117.77" width="9.25" height="58.23" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="93.08" y="106.53" width="9.25" height="69.47" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="102.92" y="72.81" width="9.25" height="103.19" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="112.77" y="79.97" width="9.25" height="96.03" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="122.62" y="73.84" width="9.25" height="102.16" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="132.46" y="58.00" width="9.25" height="118.00" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="142.31" y="60.55" width="9.25" height="115.45" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="152.15" y="67.71" width="9.25" height="108.29" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="162.00" y="72.81" width="9.25" height="103.19" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="171.85" y="101.42" width="9.25" height="74.58" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="181.69" y="121.34" width="9.25" height="54.66" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="191.54" y="127.98" width="9.25" height="48.02" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="201.38" y="144.84" width="9.25" height="31.16" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="211.23" y="155.06" width="9.25" height="20.94" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="221.08" y="164.25" width="9.25" height="11.75" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="230.92" y="167.83" width="9.25" height="8.17" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="240.77" y="168.85" width="9.25" height="7.15" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="250.62" y="173.96" width="9.25" height="2.04" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="260.46" y="174.47" width="9.25" height="1.53" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="270.31" y="176.00" width="9.25" height="0.00" fill="#7da7e0" opacity="0.85" rx="1"/>
+<rect x="280.15" y="176.00" width="9.25" height="0.00" fill="#7da7e0" opacity="0.85" rx="1"/>
+<text x="34.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">0.4</text>
+<text x="66.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">0.5</text>
+<text x="98.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">0.6</text>
+<text x="130.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">0.7</text>
+<text x="162.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">0.8</text>
+<text x="194.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">0.9</text>
+<text x="226.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">1.0</text>
+<text x="258.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">1.1</text>
+<text x="290.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">1.2</text>
+<line x1="34" y1="176" x2="290" y2="176" stroke="rgba(13,36,27,.18)"/>
+<line x1="136.4" y1="24" x2="136.4" y2="176" stroke="#0d241b" stroke-width="1.3"/>
+<text x="140.4" y="34" font-size="9" font-weight="750" fill="#0d241b">median $0.72m</text>
+<line x1="75.6" y1="24" x2="75.6" y2="176" stroke="#c9622b" stroke-width="2.2"/>
+<text x="71.6" y="40" font-size="9.5" font-weight="900" fill="#c9622b" text-anchor="end">at least $0.53m</text>
+<text x="225.2" y="168" font-size="8.5" fill="#5c78a8" text-anchor="end">95% range $0.50m–$1.01m</text>
+</svg></div>
+            <div class="chart-wrap"><svg viewBox="0 0 310 220" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+<text x="8" y="16" font-size="11.5" font-weight="800" fill="#0d241b">FY26 community value per $1 donated</text>
+<rect x="34.00" y="155.59" width="9.25" height="20.41" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="43.85" y="148.46" width="9.25" height="27.54" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="53.69" y="132.26" width="9.25" height="43.74" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="63.54" y="112.50" width="9.25" height="63.50" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="73.38" y="86.26" width="9.25" height="89.74" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="83.23" y="72.97" width="9.25" height="103.03" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="93.08" y="63.90" width="9.25" height="112.10" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="102.92" y="86.26" width="9.25" height="89.74" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="112.77" y="110.55" width="9.25" height="65.45" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="122.62" y="131.29" width="9.25" height="44.71" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="132.46" y="148.14" width="9.25" height="27.86" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="142.31" y="160.77" width="9.25" height="15.23" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="152.15" y="172.44" width="9.25" height="3.56" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="162.00" y="175.03" width="9.25" height="0.97" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="171.85" y="175.03" width="9.25" height="0.97" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="181.69" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="191.54" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="201.38" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="211.23" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="221.08" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="230.92" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="240.77" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="250.62" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="260.46" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="270.31" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="280.15" y="176.00" width="9.25" height="0.00" fill="#c7cdc8" opacity="0.85" rx="1"/>
+<rect x="34.00" y="176.00" width="9.25" height="0.00" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="43.85" y="176.00" width="9.25" height="0.00" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="53.69" y="176.00" width="9.25" height="0.00" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="63.54" y="176.00" width="9.25" height="0.00" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="73.38" y="176.00" width="9.25" height="0.00" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="83.23" y="174.66" width="9.25" height="1.34" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="93.08" y="174.21" width="9.25" height="1.79" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="102.92" y="167.96" width="9.25" height="8.04" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="112.77" y="164.39" width="9.25" height="11.61" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="122.62" y="150.99" width="9.25" height="25.01" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="132.46" y="136.25" width="9.25" height="39.75" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="142.31" y="112.58" width="9.25" height="63.42" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="152.15" y="81.76" width="9.25" height="94.24" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="162.00" y="63.90" width="9.25" height="112.10" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="171.85" y="66.58" width="9.25" height="109.42" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="181.69" y="63.90" width="9.25" height="112.10" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="191.54" y="63.90" width="9.25" height="112.10" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="201.38" y="88.02" width="9.25" height="87.98" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="211.23" y="102.31" width="9.25" height="73.69" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="221.08" y="124.19" width="9.25" height="51.81" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="230.92" y="135.80" width="9.25" height="40.20" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="240.77" y="157.24" width="9.25" height="18.76" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="250.62" y="164.39" width="9.25" height="11.61" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="260.46" y="172.43" width="9.25" height="3.57" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="270.31" y="174.21" width="9.25" height="1.79" fill="#d98f6e" opacity="0.72" rx="1"/>
+<rect x="280.15" y="173.77" width="9.25" height="2.23" fill="#d98f6e" opacity="0.72" rx="1"/>
+<text x="53.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">0.5</text>
+<text x="100.4" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">1.0</text>
+<text x="147.8" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">1.5</text>
+<text x="195.2" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">2.0</text>
+<text x="242.6" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">2.5</text>
+<text x="290.0" y="190" font-size="8.5" fill="#8b968f" text-anchor="middle">3.0</text>
+<line x1="34" y1="176" x2="290" y2="176" stroke="rgba(13,36,27,.18)"/>
+<line x1="100.4" y1="20" x2="100.4" y2="176" stroke="#7b8880" stroke-width="1.2" stroke-dasharray="3,3"/>
+<text x="104.4" y="28" font-size="8.5" fill="#7b8880">$1 break-even</text>
+<line x1="71.9" y1="30" x2="71.9" y2="176" stroke="#4d5750" stroke-width="1.4"/>
+<text x="71.9" y="202" font-size="8.5" font-weight="750" fill="#4d5750" text-anchor="middle">at least $0.70</text>
+<line x1="155.4" y1="24" x2="155.4" y2="176" stroke="#c9622b" stroke-width="2.2"/>
+<text x="151.4" y="40" font-size="9.5" font-weight="900" fill="#c9622b" text-anchor="end">at least $1.58</text>
+<rect x="194" y="20" width="10" height="10" fill="#c7cdc8"/><text x="208" y="29" font-size="8" fill="#5c675f">Food value only</text>
+<rect x="194" y="33" width="10" height="10" fill="#d98f6e" opacity="0.8"/><text x="208" y="42" font-size="8" fill="#5c675f">incl. volunteer time</text>
+</svg></div>
+          </div>
+          <div style="font-size:10px;color:#8b968f;margin-top:8px">Source: Monte Carlo, 20,000 scenarios over sourced ranges (appendix A1); value per $1 cost base is a proxy from FoodFilled's 79c-per-meal claim.</div>
+        </div>
+      </article>
+    </div>
+
+<div class="sample-note"><b>Planned study sizes:</b> about 90 matched recipient pairs are expected to detect a small change (d = 0.3); the 52 volunteers who have already consented to follow-up can detect a moderate change (d ≈ 0.40).</div>
+
+  </div>
+</div>
+</section>
+
+<section class="section" id="operating">
+<div class="wrap">
+  <div class="section-head">
+    <div><div class="eyebrow">Operating model</div><div class="section-head"><h2>Evidence becomes part of the routine</h2></div></div>
+    <p>The recommendation is designed to run alongside normal operations: capture once, analyse on a fixed cycle, communicate, then act on what was learned.</p>
+  </div>
+  <div class="steps">
+    <div class="cycle-core"><strong>Impact<br>cycle</strong><span>learn → improve</span></div>
+    <svg class="cycle-arrows" viewBox="0 0 820 478" aria-hidden="true">
+      <defs><marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker></defs>
+      <path d="M493 70 C 560 55 610 90 654 160" marker-end="url(#arrowhead)"></path>
+      <path d="M737 285 C 750 305 720 300 680 322" marker-end="url(#arrowhead)"></path>
+      <path d="M596.6 400 C 500 435 320 435 223.4 400" marker-end="url(#arrowhead)"></path>
+      <path d="M140 322 C 110 300 95 300 83 285" marker-end="url(#arrowhead)"></path>
+      <path d="M166 160 C 220 125 270 95 327 70" marker-end="url(#arrowhead)"></path>
+    </svg>
+    <div class="step glass"><div class="step-arrow">→</div><div class="no">01</div><h3>Define</h3><p>Metric, formula, source, owner, cadence, target and assumptions.</p></div>
+    <div class="step glass"><div class="step-arrow">→</div><div class="no">02</div><h3>Capture</h3><p>Use Salesforce, operational records and matched partner surveys.</p></div>
+    <div class="step glass"><div class="step-arrow">→</div><div class="no">03</div><h3>Analyse</h3><p>Run fixed methods at quarterly, biannual and annual intervals.</p></div>
+    <div class="step glass"><div class="step-arrow">→</div><div class="no">04</div><h3>Translate</h3><p>Convert analysis into stakeholder-specific evidence and stories.</p></div>
+    <div class="step glass"><div class="step-arrow">↻</div><div class="no">05</div><h3>Act</h3><p>Use the results to refine recruitment, delivery and resource decisions.</p></div>
+  </div>
+  <div class="operate" style="margin-top:12px">
+    <div class="loop glass">
+      <div><h3>The loop closes.</h3><p>Quarterly reviews ask: <b>what changed → why → what action follows → did the action work?</b></p></div>
+      <div class="loopline"></div>
+      <div style="font-size:11px;color:#6f7b75">One metrics register · one dashboard · one numbers register</div>
+    </div>
+    <div class="glass governance-card" style="padding:26px;border-radius:28px">
+      <h3 style="margin:0;font-size:23px">A simple rule for governance</h3>
+      <p style="color:var(--muted);font-size:13px">Every number that reaches a stakeholder should have a defined owner, source, calculation and assumption.</p>
+      <div style="display:grid;gap:8px;margin-top:18px">
+        <div style="padding:11px;border-radius:14px;background:rgba(225,241,229,.62);font-size:12px"><b>Automate</b> what FoodFilled already records.</div>
+        <div style="padding:11px;border-radius:14px;background:rgba(226,238,246,.62);font-size:12px"><b>Sample</b> what is expensive to collect.</div>
+        <div style="padding:11px;border-radius:14px;background:rgba(250,231,214,.62);font-size:12px"><b>Annualise</b> metrics that do not need monthly precision.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="cost">
+<div class="wrap">
+  <div class="section-head">
+    <div><div class="eyebrow">Cost & administration</div><div class="section-head"><h2>More evidence. Proportionate effort.</h2></div></div>
+    <p>The framework deliberately differentiates between measures that can be automated and outcomes that need targeted sampling.</p>
+  </div>
+  <div class="burden">
+    <div class="glass quadrants" style="border-radius:28px;overflow:hidden">
+      <div class="q"><div class="eyebrow">High impact · low burden</div><h3>Automate</h3><p>Volunteer retention and economic calculations built from data FoodFilled already records.</p></div>
+      <div class="q"><div class="eyebrow">High impact · medium burden</div><h3>Sample</h3><p>Recipient and volunteer wellbeing through selected follow-up cohorts.</p></div>
+      <div class="q"><div class="eyebrow">High burden · unclear value</div><h3>Avoid</h3><p>Manual monthly surveys, duplicate data entry and metrics without a decision attached.</p></div>
+      <div class="q"><div class="eyebrow">Low burden · high leverage</div><h3>Reuse</h3><p>One dashboard, one metrics register and one annual economic-value model.</p></div>
+    </div>
+    <div class="table glass">
+      <table>
+        <thead><tr><th>Measure</th><th>Burden</th><th>Review</th></tr></thead>
+        <tbody>
+          <tr><td>Volunteer retention</td><td>Very low</td><td>Quarterly</td></tr>
+          <tr><td>Wellbeing</td><td>3–5 min / survey</td><td>Quarterly / biannual</td></tr>
+          <tr><td>Food replacement value</td><td>Low</td><td>Annual</td></tr>
+          <tr><td>Value per $ donated</td><td>Low incremental</td><td>Annual</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:18px;padding:15px;border-radius:16px;background:rgba(225,241,229,.60);font-size:12px"><b>The operating principle:</b> maximise decision-useful evidence per hour of administration.</div>
+    </div>
+  </div>
+  <div class="glass" style="border-radius:28px;padding:24px;margin-top:12px">
+    <div class="chart-wrap"><svg viewBox="0 0 700 300" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+<text x="4" y="16" font-size="11.5" font-weight="800" fill="#0d241b">Monthly incomplete shifts, by reason</text>
+<text x="4" y="32" font-size="9.5" font-weight="800" fill="#c9622b">1.3% (Jul-Dec 25) → 5.9% (Jun-Aug 26)</text>
+<text x="4" y="44" font-size="8.5" fill="#7b8880">odds ×1.16/month, 95% CI 1.09–1.23, p = 0.0002</text>
+<line x1="52" y1="224.0" x2="650" y2="224.0" stroke="rgba(13,36,27,.06)"/>
+<text x="44" y="227.0" font-size="8.5" fill="#8b968f" text-anchor="end">0%</text>
+<line x1="52" y1="187.2" x2="650" y2="187.2" stroke="rgba(13,36,27,.06)"/>
+<text x="44" y="190.2" font-size="8.5" fill="#8b968f" text-anchor="end">2%</text>
+<line x1="52" y1="150.4" x2="650" y2="150.4" stroke="rgba(13,36,27,.06)"/>
+<text x="44" y="153.4" font-size="8.5" fill="#8b968f" text-anchor="end">4%</text>
+<line x1="52" y1="113.6" x2="650" y2="113.6" stroke="rgba(13,36,27,.06)"/>
+<text x="44" y="116.6" font-size="8.5" fill="#8b968f" text-anchor="end">6%</text>
+<line x1="52" y1="76.8" x2="650" y2="76.8" stroke="rgba(13,36,27,.06)"/>
+<text x="44" y="79.8" font-size="8.5" fill="#8b968f" text-anchor="end">8%</text>
+<line x1="52" y1="40.0" x2="650" y2="40.0" stroke="rgba(13,36,27,.06)"/>
+<text x="44" y="43.0" font-size="8.5" fill="#8b968f" text-anchor="end">10%</text>
+<text x="52.0" y="240" font-size="8" fill="#8b968f" text-anchor="middle">Jul 25</text>
+<text x="144.0" y="240" font-size="8" fill="#8b968f" text-anchor="middle">Sep 25</text>
+<text x="236.0" y="240" font-size="8" fill="#8b968f" text-anchor="middle">Nov 25</text>
+<text x="328.0" y="240" font-size="8" fill="#8b968f" text-anchor="middle">Jan 26</text>
+<text x="420.0" y="240" font-size="8" fill="#8b968f" text-anchor="middle">Mar 26</text>
+<text x="512.0" y="240" font-size="8" fill="#8b968f" text-anchor="middle">May 26</text>
+<text x="604.0" y="240" font-size="8" fill="#8b968f" text-anchor="middle">Jul 26</text>
+<path d="M 52.0 178.0 L 98.0 171.4 L 144.0 163.0 L 190.0 153.4 L 236.0 142.8 L 282.0 131.2 L 328.0 118.8 L 374.0 105.6 L 420.0 91.7 L 466.0 77.1 L 512.0 61.8 L 558.0 45.9 L 604.0 29.3 L 650.0 12.2 L 650.0 167.9 L 604.0 177.3 L 558.0 186.1 L 512.0 194.3 L 466.0 201.8 L 420.0 208.7 L 374.0 214.9 L 328.0 220.4 L 282.0 224.0 L 236.0 224.0 L 190.0 224.0 L 144.0 224.0 L 98.0 224.0 L 52.0 224.0 Z" fill="rgba(233,150,90,.18)"/>
+<path d="M 52.0 205.6 L 98.0 203.9 L 144.0 200.5 L 190.0 195.9 L 236.0 190.2 L 282.0 183.7 L 328.0 176.2 L 374.0 168.0 L 420.0 159.1 L 466.0 149.4 L 512.0 139.1 L 558.0 128.1 L 604.0 116.6 L 650.0 104.4" fill="none" stroke="#c9622b" stroke-width="2"/>
+<path d="M 52.0 144.9 L 98.0 152.2 L 144.0 109.9 L 190.0 111.8 L 236.0 148.6 L 282.0 95.2 L 328.0 82.3 L 374.0 109.9 L 420.0 148.6 L 466.0 113.6 L 512.0 143.0 L 558.0 159.6 L 604.0 148.6 L 650.0 155.9" fill="none" stroke="#616d67" stroke-width="1.8"/>
+<circle cx="52.0" cy="144.9" r="2.6" fill="#616d67"/>
+<circle cx="52.0" cy="181.7" r="3" fill="#c9622b"/>
+<circle cx="98.0" cy="152.2" r="2.6" fill="#616d67"/>
+<circle cx="98.0" cy="201.9" r="3" fill="#c9622b"/>
+<circle cx="144.0" cy="109.9" r="2.6" fill="#616d67"/>
+<circle cx="144.0" cy="211.1" r="3" fill="#c9622b"/>
+<circle cx="190.0" cy="111.8" r="2.6" fill="#616d67"/>
+<circle cx="190.0" cy="213.0" r="3" fill="#c9622b"/>
+<circle cx="236.0" cy="148.6" r="2.6" fill="#616d67"/>
+<circle cx="236.0" cy="200.1" r="3" fill="#c9622b"/>
+<circle cx="282.0" cy="95.2" r="2.6" fill="#616d67"/>
+<circle cx="282.0" cy="189.0" r="3" fill="#c9622b"/>
+<circle cx="328.0" cy="82.3" r="2.6" fill="#616d67"/>
+<circle cx="328.0" cy="144.9" r="3" fill="#c9622b"/>
+<circle cx="374.0" cy="109.9" r="2.6" fill="#616d67"/>
+<circle cx="374.0" cy="181.7" r="3" fill="#c9622b"/>
+<circle cx="420.0" cy="148.6" r="2.6" fill="#616d67"/>
+<circle cx="420.0" cy="187.2" r="3" fill="#c9622b"/>
+<circle cx="466.0" cy="113.6" r="2.6" fill="#616d67"/>
+<circle cx="466.0" cy="150.4" r="3" fill="#c9622b"/>
+<circle cx="512.0" cy="143.0" r="2.6" fill="#616d67"/>
+<circle cx="512.0" cy="139.4" r="3" fill="#c9622b"/>
+<circle cx="558.0" cy="159.6" r="2.6" fill="#616d67"/>
+<circle cx="558.0" cy="126.5" r="3" fill="#c9622b"/>
+<circle cx="604.0" cy="148.6" r="2.6" fill="#616d67"/>
+<circle cx="604.0" cy="98.9" r="3" fill="#c9622b"/>
+<circle cx="650.0" cy="155.9" r="2.6" fill="#616d67"/>
+<circle cx="650.0" cy="121.0" r="3" fill="#c9622b"/>
+</svg></div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;font-size:10px;color:#68766f;margin-top:10px">
+      <span><i style="display:inline-block;width:14px;height:10px;border-radius:3px;background:rgba(233,150,90,.4);margin-right:5px;vertical-align:-1px"></i>95% CI (trend)</span>
+      <span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#c9622b;margin-right:5px;vertical-align:-1px"></i>Missed: nobody attended</span>
+      <span><i style="display:inline-block;width:14px;height:2px;background:#616d67;margin-right:5px;vertical-align:2px"></i>No donation available (control)</span>
+    </div>
+    <div style="font-size:10px;color:#8b968f;margin-top:8px">Source: FoodFilled Data Pack, Jul 2025–Aug 2026; quasi-binomial GLM on 8,166 scheduled shifts.</div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="next">
+<div class="wrap">
+  <div class="section-head">
+    <div><div class="eyebrow">Implementation priorities</div><div class="section-head"><h2>Two moves unlock the outcome layer</h2></div></div>
+    <p>The statistical design depends on consistent matching before data collection begins.</p>
+  </div>
+  <div class="metric-map">
+    <div class="metric-card glass"><div class="metric-top"><h3>01 · Lock survey matching rules</h3><span class="frequency">Before launch</span></div><p>Anonymous ID linking, identical questions, a validated scale such as WHO-5, and fixed follow-up windows.</p></div>
+    <div class="metric-card glass"><div class="metric-top"><h3>02 · Add value-per-$ output</h3><span class="frequency">Numbers register</span></div><p>Divide the Monte Carlo economic-value draws by $459k to generate the proposed value-per-$1 range and document its assumptions.</p></div>
+  </div>
+</div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="wrap footer-grid">
+  <div><div class="logo">Food<i>Filled</i></div><p>Impact intelligence dashboard — bringing together operational performance, stakeholder outcomes and conservative economic value.</p></div>
+  <div style="font-size:11px;color:rgba(255,255,255,.38);text-align:right">FY25 baseline<br>Proposed impact framework</div>
+</div>
+</footer>
+
+<button class="float" id="floatBtn">Explore the dashboard ↓</button>
+
+<script>
+const sideLinks=[...document.querySelectorAll('.side-index a')];
+const sideMap=new Map(sideLinks.map(a=>[a.getAttribute('href').slice(1),a]));
+const sideSections=[...sideMap.keys()].map(id=>document.getElementById(id)).filter(Boolean);
+const sideObserver=new IntersectionObserver(entries=>{
+ entries.forEach(entry=>{
+  const link=sideMap.get(entry.target.id);
+  if(!link)return;
+  if(entry.isIntersecting) link.classList.add('active'); else link.classList.remove('active');
+ });
+ if(![...sideMap.values()].some(a=>a.classList.contains('active'))){
+   let closest=null,dist=Infinity;
+   sideSections.forEach(sec=>{const r=sec.getBoundingClientRect();const d=Math.abs(r.top);if(r.top<window.innerHeight&&d<dist){dist=d;closest=sec}});
+   if(closest) sideMap.get(closest.id).classList.add('active');
+ }
+},{rootMargin:'-40% 0px -50% 0px',threshold:0});
+sideSections.forEach(sec=>sideObserver.observe(sec));
+
+const fmt=new Intl.NumberFormat('en-AU');
+const counters=[...document.querySelectorAll('.counter')];
+const counterObserver=new IntersectionObserver(es=>es.forEach(e=>{
+ if(!e.isIntersecting)return;
+ const el=e.target,target=+el.dataset.target,start=performance.now(),dur=1150;
+ const tick=t=>{let p=Math.min((t-start)/dur,1),q=1-Math.pow(1-p,3);el.textContent=fmt.format(Math.round(target*q));if(p<1)requestAnimationFrame(tick)};
+ requestAnimationFrame(tick);counterObserver.unobserve(el);
+}),{threshold:.55});
+counters.forEach(x=>counterObserver.observe(x));
+
+const metricObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+ if(entry.isIntersecting) entry.target.classList.add('open');
+}),{root:null,rootMargin:'0px 0px -50% 0px',threshold:0});
+document.querySelectorAll('#measures .metric-card').forEach(card=>metricObserver.observe(card));
+document.querySelectorAll('.learn').forEach(btn=>{
+ btn.addEventListener('click',()=>{
+   const id=btn.dataset.learn+'Learn', el=document.getElementById(id);
+   const model=btn.closest('.model');model.classList.toggle('show');
+   btn.textContent=model.classList.contains('show')?'Close detail ↑':(
+     btn.dataset.learn==='glm'?'What is the model doing? +':
+     btn.dataset.learn==='km'?'Why this matters +':
+     btn.dataset.learn==='paired'?'Why also run Wilcoxon? +':'Why publish “at least”? +'
+   );
+ });
+});
+
+const glmData={
+ balanced:[30,22,38],
+ channel:[61,25,32],
+ month:[27,66,35]
+};
+function drawDots(mode='balanced'){
+ const d=document.getElementById('glmDots');d.innerHTML='';
+ for(let i=0;i<40;i++){const s=document.createElement('span');s.className='dot'; if((mode==='channel'&&i%7<2)||(mode==='month'&&Math.floor(i/10)===2)|| (mode==='balanced'&&i%9===1))s.classList.add('hot');d.appendChild(s)}
+}
+function setGLM(mode){
+ const v=glmData[mode];
+ ['g1','g2','g3'].forEach((id,i)=>{document.getElementById(id).style.width=v[i]+'%';document.getElementById('gv'+(i+1)).textContent=v[i]+'%'});
+ drawDots(mode);
+}
+document.querySelectorAll('.glm-toggle').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('.glm-toggle').forEach(x=>x.classList.remove('active'));b.classList.add('active');setGLM(b.dataset.mode);
+}));
+setGLM('balanced');
+
+document.querySelectorAll('.km-toggle').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('.km-toggle').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+ const a=document.getElementById('kmA'),bb=document.getElementById('kmB');
+ if(b.dataset.group==='channel'){
+   a.setAttribute('d','M0 18 L58 18 L60 27 L130 27 L132 41 L204 41 L206 57 L290 57 L292 69 L380 69 L382 84 L460 84 L462 96 L540 96 L542 105 L620 105');
+   bb.setAttribute('d','M0 18 L72 18 L74 34 L145 34 L147 44 L220 44 L222 52 L304 52 L306 68 L395 68 L397 78 L480 78 L482 87 L540 87 L542 94 L620 94');
+ }else{
+   a.setAttribute('d','M0 18 L70 18 L72 29 L135 29 L137 39 L210 39 L212 53 L285 53 L287 64 L370 64 L372 77 L445 77 L447 91 L545 91 L547 103 L620 103');
+   bb.setAttribute('d','M0 18 L85 18 L87 38 L155 38 L157 45 L230 45 L232 60 L320 60 L322 73 L420 73 L422 85 L520 85 L522 95 L620 95');
+ }
+}));
+
+document.querySelectorAll('.paired-tab').forEach(tab=>tab.addEventListener('click',()=>{
+ document.querySelectorAll('.paired-tab').forEach(x=>x.classList.remove('active'));tab.classList.add('active');
+ document.querySelectorAll('.paired-view').forEach(v=>v.style.display='none');
+ document.getElementById('paired'+tab.dataset.view.charAt(0).toUpperCase()+tab.dataset.view.slice(1)).style.display='block';
+}));
+
+const sim=document.getElementById('simBars'),runMC=document.getElementById('runMC'),mcResult=document.getElementById('mcResult'),mcDollar=document.getElementById('mcDollar');
+function renderSim(animated=false){
+ sim.innerHTML='';
+ const vals=Array.from({length:34},(_,i)=>{
+   const x=Math.exp(-Math.pow((i-17)/8,2)*1.6);
+   return Math.max(5,Math.min(100,x*100*(.82+Math.random()*.26)));
+ });
+ vals.forEach((v,i)=>{const bar=document.createElement('i');bar.style.height=(animated?5:v)+'%';sim.appendChild(bar);if(animated)setTimeout(()=>bar.style.height=v+'%',20+i*18)});
+}
+runMC.addEventListener('click',()=>{
+ runMC.disabled=true;runMC.textContent='Simulating…';
+ const vals=Array.from({length:34},(_,i)=>Math.max(5,Math.min(100,Math.exp(-Math.pow((i-17)/8,2)*1.6)*100*(.82+Math.random()*.26))));
+ sim.innerHTML='';
+ vals.forEach((v,i)=>{const bar=document.createElement('i');bar.style.height='4%';sim.appendChild(bar);setTimeout(()=>bar.style.height=v+'%',25+i*18)});
+ setTimeout(()=>{
+   const variant=(Math.random()*0.14-0.03), amount=(0.70+variant).toFixed(2);
+   mcResult.textContent='≥ $'+amount+'m';
+   mcDollar.textContent='≥ ~$'+(1.50+variant*1.4).toFixed(2);
+   runMC.disabled=false;runMC.textContent='Run 1,000 scenarios ↻';
+ },750);
+});
+renderSim();
+
+const progress=document.getElementById('progress');
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;progress.style.width=(h?scrollY/h*100:0)+'%'},{passive:true});
+document.getElementById('floatBtn').addEventListener('click',()=>{
+ const ids=['impact','framework','measures','evidence','operating','cost','next'];const y=scrollY+130;const next=ids.map(id=>document.getElementById(id)).find(el=>el.offsetTop>y);(next||document.getElementById('impact')).scrollIntoView({behavior:'smooth',block:'start'});
+});
+</script>
+
+</body>
+</html>
